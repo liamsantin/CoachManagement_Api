@@ -14,10 +14,10 @@ public class UserRepository : IUserRepository
             ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
     }
 
-    public async Task<User?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByIdAsync(int id)
     {
         await using var connection = new MySqlConnection(_connectionString);
-        await connection.OpenAsync(cancellationToken);
+        await connection.OpenAsync();
 
         const string sql = """
             SELECT id_users, username, password, email, phone, created_at, updated_at
@@ -29,16 +29,16 @@ public class UserRepository : IUserRepository
         await using var cmd = new MySqlCommand(sql, connection);
         cmd.Parameters.AddWithValue("@id", id);
 
-        await using var reader = await cmd.ExecuteReaderAsync(cancellationToken);
-        if (await reader.ReadAsync(cancellationToken))
+        await using var reader = await cmd.ExecuteReaderAsync();
+        if (await reader.ReadAsync())
             return MapUser(reader);
         return null;
     }
 
-    public async Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByUsernameAsync(string username)
     {
         await using var connection = new MySqlConnection(_connectionString);
-        await connection.OpenAsync(cancellationToken);
+        await connection.OpenAsync();
 
         const string sql = """
             SELECT id_users, username, password, email, phone, created_at, updated_at
@@ -50,18 +50,18 @@ public class UserRepository : IUserRepository
         await using var cmd = new MySqlCommand(sql, connection);
         cmd.Parameters.AddWithValue("@username", username);
 
-        await using var reader = await cmd.ExecuteReaderAsync(cancellationToken);
-        if (await reader.ReadAsync(cancellationToken))
+        await using var reader = await cmd.ExecuteReaderAsync();
+        if (await reader.ReadAsync())
             return MapUser(reader);
         return null;
     }
 
-    public async Task<User?> GetByEmailAsync(string? email, CancellationToken cancellationToken = default)
+    public async Task<User?> GetByEmailAsync(string? email)
     {
         if (string.IsNullOrWhiteSpace(email)) return null;
 
         await using var connection = new MySqlConnection(_connectionString);
-        await connection.OpenAsync(cancellationToken);
+        await connection.OpenAsync();
 
         const string sql = """
             SELECT id_users, username, password, email, phone, created_at, updated_at
@@ -73,16 +73,16 @@ public class UserRepository : IUserRepository
         await using var cmd = new MySqlCommand(sql, connection);
         cmd.Parameters.AddWithValue("@email", email);
 
-        await using var reader = await cmd.ExecuteReaderAsync(cancellationToken);
-        if (await reader.ReadAsync(cancellationToken))
+        await using var reader = await cmd.ExecuteReaderAsync();
+        if (await reader.ReadAsync())
             return MapUser(reader);
         return null;
     }
 
-    public async Task<int> CreateAsync(User user, CancellationToken cancellationToken = default)
+    public async Task<int> CreateAsync(User user)
     {
         await using var connection = new MySqlConnection(_connectionString);
-        await connection.OpenAsync(cancellationToken);
+        await connection.OpenAsync();
 
         const string sql = """
             INSERT INTO Users (username, password, email, phone)
@@ -96,7 +96,7 @@ public class UserRepository : IUserRepository
         cmd.Parameters.AddWithValue("@email", user.Email ?? (object)DBNull.Value);
         cmd.Parameters.AddWithValue("@phone", user.Phone ?? (object)DBNull.Value);
 
-        var result = await cmd.ExecuteScalarAsync(cancellationToken);
+        var result = await cmd.ExecuteScalarAsync();
         return Convert.ToInt32(result);
     }
 

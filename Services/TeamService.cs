@@ -13,13 +13,13 @@ public class TeamService : ITeamService
         _teamRepository = teamRepository;
     }
 
-    public Task<IReadOnlyList<Team>> GetAllAsync(int userId, CancellationToken cancellationToken = default)
-        => _teamRepository.GetAllByUserIdAsync(userId, cancellationToken);
+    public Task<IReadOnlyList<Team>> GetAllAsync(int userId)
+        => _teamRepository.GetAllByUserIdAsync(userId);
 
-    public Task<Team?> GetByIdAsync(int teamId, int userId, CancellationToken cancellationToken = default)
-        => _teamRepository.GetByIdAndUserIdAsync(teamId, userId, cancellationToken);
+    public Task<Team?> GetByIdAsync(int teamId, int userId)
+        => _teamRepository.GetByIdAndUserIdAsync(teamId, userId);
 
-    public async Task<Team?> CreateAsync(int userId, int? fkClubsId, int fkLeaguesId, string name, CancellationToken cancellationToken = default)
+    public async Task<Team?> CreateAsync(int userId, int? fkClubsId, int fkLeaguesId, string name)
     {
         var team = new Team
         {
@@ -29,13 +29,13 @@ public class TeamService : ITeamService
             name = name
         };
 
-        var id = await _teamRepository.CreateAsync(team, cancellationToken);
-        return await _teamRepository.GetByIdAndUserIdAsync(id, userId, cancellationToken);
+        var id = await _teamRepository.CreateAsync(team);
+        return await _teamRepository.GetByIdAndUserIdAsync(id, userId);
     }
 
-    public async Task<Team?> UpdateAsync(int teamId, int userId, int? fkClubsId, int fkLeaguesId, string name, CancellationToken cancellationToken = default)
+    public async Task<Team?> UpdateAsync(int teamId, int userId, int? fkClubsId, int fkLeaguesId, string name)
     {
-        var existing = await _teamRepository.GetByIdAndUserIdAsync(teamId, userId, cancellationToken);
+        var existing = await _teamRepository.GetByIdAndUserIdAsync(teamId, userId);
         if (existing == null)
             return null;
 
@@ -43,13 +43,13 @@ public class TeamService : ITeamService
         existing.fk_leagues_id = fkLeaguesId;
         existing.name = name;
 
-        var updated = await _teamRepository.UpdateAsync(existing, userId, cancellationToken);
+        var updated = await _teamRepository.UpdateAsync(existing, userId);
         if (!updated)
             return null;
 
-        return await _teamRepository.GetByIdAndUserIdAsync(teamId, userId, cancellationToken);
+        return await _teamRepository.GetByIdAndUserIdAsync(teamId, userId);
     }
 
-    public Task<bool> DeleteAsync(int teamId, int userId, CancellationToken cancellationToken = default)
-        => _teamRepository.DeleteAsync(teamId, userId, cancellationToken);
+    public Task<bool> DeleteAsync(int teamId, int userId)
+        => _teamRepository.DeleteAsync(teamId, userId);
 }

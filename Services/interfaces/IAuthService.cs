@@ -4,6 +4,7 @@ namespace CoachManagement_Api.Services.interfaces;
 
 public interface IAuthService
 {
-    Task<RegisterResponse?> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default);
-    Task<LoginResponse?> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default);
+    Task<RegisterResponse?> RegisterAsync(RegisterRequest request);
+
+    Task<LoginResponse?> LoginAsync(LoginRequest request);
 }

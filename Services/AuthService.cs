@@ -20,15 +20,15 @@ public class AuthService : IAuthService
         _configuration = configuration;
     }
 
-    public async Task<RegisterResponse?> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
+    public async Task<RegisterResponse?> RegisterAsync(RegisterRequest request)
     {
-        var existingByUsername = await _userRepository.GetByUsernameAsync(request.Username, cancellationToken);
+        var existingByUsername = await _userRepository.GetByUsernameAsync(request.Username);
         if (existingByUsername != null)
             return null; // Username déjà pris
 
         if (!string.IsNullOrWhiteSpace(request.Email))
         {
-            var existingByEmail = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
+            var existingByEmail = await _userRepository.GetByEmailAsync(request.Email);
             if (existingByEmail != null)
                 return null; // Email déjà utilisé
         }
@@ -41,7 +41,7 @@ public class AuthService : IAuthService
             Phone = request.Phone
         };
 
-        var id = await _userRepository.CreateAsync(user, cancellationToken);
+        var id = await _userRepository.CreateAsync(user);
         return new RegisterResponse
         {
             Id = id,
@@ -52,9 +52,9 @@ public class AuthService : IAuthService
         };
     }
 
-    public async Task<LoginResponse?> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
+    public async Task<LoginResponse?> LoginAsync(LoginRequest request)
     {
-        var user = await _userRepository.GetByUsernameAsync(request.Username, cancellationToken);
+        var user = await _userRepository.GetByUsernameAsync(request.Username);
         if (user == null)
             return null;
 

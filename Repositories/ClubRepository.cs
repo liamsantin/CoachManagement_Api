@@ -14,10 +14,10 @@ public class ClubRepository : IClubRepository
             ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
     }
 
-    public async Task<IReadOnlyList<Club>> GetAllByUserIdAsync(int userId, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<Club>> GetAllByUserIdAsync(int userId)
     {
         await using var connection = new MySqlConnection(_connectionString);
-        await connection.OpenAsync(cancellationToken);
+        await connection.OpenAsync();
 
         const string sql = """
             SELECT id_clubs, fk_users_id, name, created_at, updated_at
@@ -30,16 +30,16 @@ public class ClubRepository : IClubRepository
         cmd.Parameters.AddWithValue("@userId", userId);
 
         var list = new List<Club>();
-        await using var reader = await cmd.ExecuteReaderAsync(cancellationToken);
-        while (await reader.ReadAsync(cancellationToken))
+        await using var reader = await cmd.ExecuteReaderAsync();
+        while (await reader.ReadAsync())
             list.Add(MapClub(reader));
         return list;
     }
 
-    public async Task<Club?> GetByIdAndUserIdAsync(int clubId, int userId, CancellationToken cancellationToken = default)
+    public async Task<Club?> GetByIdAndUserIdAsync(int clubId, int userId)
     {
         await using var connection = new MySqlConnection(_connectionString);
-        await connection.OpenAsync(cancellationToken);
+        await connection.OpenAsync();
 
         const string sql = """
             SELECT id_clubs, fk_users_id, name, created_at, updated_at
@@ -52,16 +52,16 @@ public class ClubRepository : IClubRepository
         cmd.Parameters.AddWithValue("@id", clubId);
         cmd.Parameters.AddWithValue("@userId", userId);
 
-        await using var reader = await cmd.ExecuteReaderAsync(cancellationToken);
-        if (await reader.ReadAsync(cancellationToken))
+        await using var reader = await cmd.ExecuteReaderAsync();
+        if (await reader.ReadAsync())
             return MapClub(reader);
         return null;
     }
 
-    public async Task<int> CreateAsync(Club club, CancellationToken cancellationToken = default)
+    public async Task<int> CreateAsync(Club club)
     {
         await using var connection = new MySqlConnection(_connectionString);
-        await connection.OpenAsync(cancellationToken);
+        await connection.OpenAsync();
 
         const string sql = """
             INSERT INTO Clubs (fk_users_id, name)
@@ -73,14 +73,14 @@ public class ClubRepository : IClubRepository
         cmd.Parameters.AddWithValue("@fk_users_id", club.fk_users_id);
         cmd.Parameters.AddWithValue("@name", club.name);
 
-        var result = await cmd.ExecuteScalarAsync(cancellationToken);
+        var result = await cmd.ExecuteScalarAsync();
         return Convert.ToInt32(result);
     }
 
-    public async Task<bool> UpdateAsync(Club club, int userId, CancellationToken cancellationToken = default)
+    public async Task<bool> UpdateAsync(Club club, int userId)
     {
         await using var connection = new MySqlConnection(_connectionString);
-        await connection.OpenAsync(cancellationToken);
+        await connection.OpenAsync();
 
         const string sql = """
             UPDATE Clubs
@@ -93,14 +93,14 @@ public class ClubRepository : IClubRepository
         cmd.Parameters.AddWithValue("@id_clubs", club.id_clubs);
         cmd.Parameters.AddWithValue("@userId", userId);
 
-        var rows = await cmd.ExecuteNonQueryAsync(cancellationToken);
+        var rows = await cmd.ExecuteNonQueryAsync();
         return rows > 0;
     }
 
-    public async Task<bool> DeleteAsync(int clubId, int userId, CancellationToken cancellationToken = default)
+    public async Task<bool> DeleteAsync(int clubId, int userId)
     {
         await using var connection = new MySqlConnection(_connectionString);
-        await connection.OpenAsync(cancellationToken);
+        await connection.OpenAsync();
 
         const string sql = """
             DELETE FROM Clubs
@@ -111,7 +111,7 @@ public class ClubRepository : IClubRepository
         cmd.Parameters.AddWithValue("@id", clubId);
         cmd.Parameters.AddWithValue("@userId", userId);
 
-        var rows = await cmd.ExecuteNonQueryAsync(cancellationToken);
+        var rows = await cmd.ExecuteNonQueryAsync();
         return rows > 0;
     }
 

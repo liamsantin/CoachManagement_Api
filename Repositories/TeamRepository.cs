@@ -14,10 +14,10 @@ public class TeamRepository : ITeamRepository
             ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
     }
 
-    public async Task<IReadOnlyList<Team>> GetAllByUserIdAsync(int userId, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<Team>> GetAllByUserIdAsync(int userId)
     {
         await using var connection = new MySqlConnection(_connectionString);
-        await connection.OpenAsync(cancellationToken);
+        await connection.OpenAsync();
 
         const string sql = """
             SELECT id_teams, fk_users_id, fk_clubs_id, fk_leagues_id, name, created_at, updated_at
@@ -30,16 +30,16 @@ public class TeamRepository : ITeamRepository
         cmd.Parameters.AddWithValue("@userId", userId);
 
         var list = new List<Team>();
-        await using var reader = await cmd.ExecuteReaderAsync(cancellationToken);
-        while (await reader.ReadAsync(cancellationToken))
+        await using var reader = await cmd.ExecuteReaderAsync();
+        while (await reader.ReadAsync())
             list.Add(MapTeam(reader));
         return list;
     }
 
-    public async Task<Team?> GetByIdAndUserIdAsync(int teamId, int userId, CancellationToken cancellationToken = default)
+    public async Task<Team?> GetByIdAndUserIdAsync(int teamId, int userId)
     {
         await using var connection = new MySqlConnection(_connectionString);
-        await connection.OpenAsync(cancellationToken);
+        await connection.OpenAsync();
 
         const string sql = """
             SELECT id_teams, fk_users_id, fk_clubs_id, fk_leagues_id, name, created_at, updated_at
@@ -52,16 +52,16 @@ public class TeamRepository : ITeamRepository
         cmd.Parameters.AddWithValue("@id", teamId);
         cmd.Parameters.AddWithValue("@userId", userId);
 
-        await using var reader = await cmd.ExecuteReaderAsync(cancellationToken);
-        if (await reader.ReadAsync(cancellationToken))
+        await using var reader = await cmd.ExecuteReaderAsync();
+        if (await reader.ReadAsync())
             return MapTeam(reader);
         return null;
     }
 
-    public async Task<int> CreateAsync(Team team, CancellationToken cancellationToken = default)
+    public async Task<int> CreateAsync(Team team)
     {
         await using var connection = new MySqlConnection(_connectionString);
-        await connection.OpenAsync(cancellationToken);
+        await connection.OpenAsync();
 
         const string sql = """
             INSERT INTO Teams (fk_users_id, fk_clubs_id, fk_leagues_id, name)
@@ -75,14 +75,14 @@ public class TeamRepository : ITeamRepository
         cmd.Parameters.AddWithValue("@fk_leagues_id", team.fk_leagues_id);
         cmd.Parameters.AddWithValue("@name", team.name);
 
-        var result = await cmd.ExecuteScalarAsync(cancellationToken);
+        var result = await cmd.ExecuteScalarAsync();
         return Convert.ToInt32(result);
     }
 
-    public async Task<bool> UpdateAsync(Team team, int userId, CancellationToken cancellationToken = default)
+    public async Task<bool> UpdateAsync(Team team, int userId)
     {
         await using var connection = new MySqlConnection(_connectionString);
-        await connection.OpenAsync(cancellationToken);
+        await connection.OpenAsync();
 
         const string sql = """
             UPDATE Teams
@@ -99,14 +99,14 @@ public class TeamRepository : ITeamRepository
         cmd.Parameters.AddWithValue("@id_teams", team.id_teams);
         cmd.Parameters.AddWithValue("@userId", userId);
 
-        var rows = await cmd.ExecuteNonQueryAsync(cancellationToken);
+        var rows = await cmd.ExecuteNonQueryAsync();
         return rows > 0;
     }
 
-    public async Task<bool> DeleteAsync(int teamId, int userId, CancellationToken cancellationToken = default)
+    public async Task<bool> DeleteAsync(int teamId, int userId)
     {
         await using var connection = new MySqlConnection(_connectionString);
-        await connection.OpenAsync(cancellationToken);
+        await connection.OpenAsync();
 
         const string sql = """
             DELETE FROM Teams
@@ -117,7 +117,7 @@ public class TeamRepository : ITeamRepository
         cmd.Parameters.AddWithValue("@id", teamId);
         cmd.Parameters.AddWithValue("@userId", userId);
 
-        var rows = await cmd.ExecuteNonQueryAsync(cancellationToken);
+        var rows = await cmd.ExecuteNonQueryAsync();
         return rows > 0;
     }
 

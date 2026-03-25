@@ -13,13 +13,13 @@ public class ClubService : IClubService
         _clubRepository = clubRepository;
     }
 
-    public Task<IReadOnlyList<Club>> GetAllAsync(int userId, CancellationToken cancellationToken = default)
-        => _clubRepository.GetAllByUserIdAsync(userId, cancellationToken);
+    public Task<IReadOnlyList<Club>> GetAllAsync(int userId)
+        => _clubRepository.GetAllByUserIdAsync(userId);
 
-    public Task<Club?> GetByIdAsync(int clubId, int userId, CancellationToken cancellationToken = default)
-        => _clubRepository.GetByIdAndUserIdAsync(clubId, userId, cancellationToken);
+    public Task<Club?> GetByIdAsync(int clubId, int userId)
+        => _clubRepository.GetByIdAndUserIdAsync(clubId, userId);
 
-    public async Task<Club?> CreateAsync(int userId, string name, CancellationToken cancellationToken = default)
+    public async Task<Club?> CreateAsync(int userId, string name)
     {
         var club = new Club
         {
@@ -27,25 +27,25 @@ public class ClubService : IClubService
             name = name
         };
 
-        var id = await _clubRepository.CreateAsync(club, cancellationToken);
-        return await _clubRepository.GetByIdAndUserIdAsync(id, userId, cancellationToken);
+        var id = await _clubRepository.CreateAsync(club);
+        return await _clubRepository.GetByIdAndUserIdAsync(id, userId);
     }
 
-    public async Task<Club?> UpdateAsync(int clubId, int userId, string name, CancellationToken cancellationToken = default)
+    public async Task<Club?> UpdateAsync(int clubId, int userId, string name)
     {
-        var existing = await _clubRepository.GetByIdAndUserIdAsync(clubId, userId, cancellationToken);
+        var existing = await _clubRepository.GetByIdAndUserIdAsync(clubId, userId);
         if (existing == null)
             return null;
 
         existing.name = name;
 
-        var updated = await _clubRepository.UpdateAsync(existing, userId, cancellationToken);
+        var updated = await _clubRepository.UpdateAsync(existing, userId);
         if (!updated)
             return null;
 
-        return await _clubRepository.GetByIdAndUserIdAsync(clubId, userId, cancellationToken);
+        return await _clubRepository.GetByIdAndUserIdAsync(clubId, userId);
     }
 
-    public Task<bool> DeleteAsync(int clubId, int userId, CancellationToken cancellationToken = default)
-        => _clubRepository.DeleteAsync(clubId, userId, cancellationToken);
+    public Task<bool> DeleteAsync(int clubId, int userId)
+        => _clubRepository.DeleteAsync(clubId, userId);
 }

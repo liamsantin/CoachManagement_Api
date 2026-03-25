@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "CoachManagement API",
-    "description": "Toutes les routes des controllers (Auth, User, Team, Club). Mettre à jour ce fichier à chaque nouveau controller.",
+    "description": "Toutes les routes des controllers (Auth, User, Team, Club, Localite, Canton). Mettre à jour ce fichier à chaque nouveau controller.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -359,6 +359,88 @@
               "path": ["api", "club", "1"]
             },
             "description": "DELETE /api/club/{id} — Suppression si propriétaire (204)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Localite",
+      "item": [
+        {
+          "name": "Get all localites",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/localite",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "localite"]
+            },
+            "description": "GET /api/localite — Toutes les localités."
+          }
+        },
+        {
+          "name": "Get localite by id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/localite/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "localite", "1"]
+            },
+            "description": "GET /api/localite/{id} — Détail d'une localité."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Canton",
+      "item": [
+        {
+          "name": "Get all cantons",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/canton",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "canton"]
+            },
+            "description": "GET /api/canton — Tous les cantons."
+          }
+        },
+        {
+          "name": "Get canton by id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/canton/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "canton", "1"]
+            },
+            "description": "GET /api/canton/{id} — Détail d'un canton."
           }
         }
       ]
