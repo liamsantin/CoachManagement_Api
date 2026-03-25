@@ -1,5 +1,5 @@
 using CoachManagement_Api.DTOs.Auth;
-using CoachManagement_Api.Services;
+using CoachManagement_Api.Services.interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoachManagement_Api.Controllers;

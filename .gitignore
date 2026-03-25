@@ -1,3 +1,6 @@
-./vs
+.vs/
+obj/
 
-/obj
+.cursor/
+
+bin

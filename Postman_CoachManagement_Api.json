@@ -1,0 +1,256 @@
+{
+  "info": {
+    "name": "CoachManagement API",
+    "description": "Toutes les routes des controllers (Auth, User, Team). Mettre à jour ce fichier à chaque nouveau controller.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5089"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"johndoe\",\n  \"password\": \"MotDePasse123!\",\n  \"email\": \"john@example.com\",\n  \"phone\": \"0612345678\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "description": "POST /api/auth/register — Inscription. 201 = succès, 409 = username/email déjà utilisé."
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"johndoe\",\n  \"password\": \"MotDePasse123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "POST /api/auth/login — Connexion JWT."
+          }
+        },
+        {
+          "name": "Login (sauvegarde token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.token) {",
+                  "    pm.collectionVariables.set('token', json.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"johndoe\",\n  \"password\": \"MotDePasse123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "POST /api/auth/login — Enregistre le token dans la variable de collection {{token}}."
+          }
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Get current user (me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", "me"]
+            },
+            "description": "GET /api/user/me — Utilisateur connecté (JWT)."
+          }
+        },
+        {
+          "name": "Get user by id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", "1"]
+            },
+            "description": "GET /api/user/{id} — Utilisateur par id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Team",
+      "item": [
+        {
+          "name": "Get all teams",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/team",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "team"]
+            },
+            "description": "GET /api/team — Toutes les équipes de l'utilisateur connecté."
+          }
+        },
+        {
+          "name": "Get team by id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/team/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "team", "1"]
+            },
+            "description": "GET /api/team/{id} — Détail si l'équipe appartient à l'utilisateur."
+          }
+        },
+        {
+          "name": "Create team",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fk_clubs_id\": null,\n  \"fk_leagues_id\": 1,\n  \"name\": \"Mon équipe\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/team",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "team"]
+            },
+            "description": "POST /api/team — Création. fk_clubs_id optionnel."
+          }
+        },
+        {
+          "name": "Update team",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fk_clubs_id\": null,\n  \"fk_leagues_id\": 1,\n  \"name\": \"Mon équipe (modifiée)\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/team/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "team", "1"]
+            },
+            "description": "PUT /api/team/{id} — Mise à jour si propriétaire."
+          }
+        },
+        {
+          "name": "Delete team",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/team/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "team", "1"]
+            },
+            "description": "DELETE /api/team/{id} — Suppression si propriétaire (204)."
+          }
+        }
+      ]
+    }
+  ]
+}

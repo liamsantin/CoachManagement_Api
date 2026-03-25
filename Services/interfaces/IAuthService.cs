@@ -1,6 +1,6 @@
 using CoachManagement_Api.DTOs.Auth;
 
-namespace CoachManagement_Api.Services;
+namespace CoachManagement_Api.Services.interfaces;
 
 public interface IAuthService
 {

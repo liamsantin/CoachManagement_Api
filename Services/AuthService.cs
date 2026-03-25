@@ -3,7 +3,8 @@ using System.Security.Claims;
 using System.Text;
 using CoachManagement_Api.DTOs.Auth;
 using CoachManagement_Api.Models;
-using CoachManagement_Api.Repositories;
+using CoachManagement_Api.Repositories.interfaces;
+using CoachManagement_Api.Services.interfaces;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CoachManagement_Api.Services;

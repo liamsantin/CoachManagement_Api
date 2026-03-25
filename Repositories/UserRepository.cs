@@ -1,4 +1,5 @@
 using CoachManagement_Api.Models;
+using CoachManagement_Api.Repositories.interfaces;
 using MySqlConnector;
 
 namespace CoachManagement_Api.Repositories;
@@ -11,6 +12,27 @@ public class UserRepository : IUserRepository
     {
         _connectionString = configuration.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+    }
+
+    public async Task<User?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        await using var connection = new MySqlConnection(_connectionString);
+        await connection.OpenAsync(cancellationToken);
+
+        const string sql = """
+            SELECT id_users, username, password, email, phone, created_at, updated_at
+            FROM Users
+            WHERE id_users = @id
+            LIMIT 1
+            """;
+
+        await using var cmd = new MySqlCommand(sql, connection);
+        cmd.Parameters.AddWithValue("@id", id);
+
+        await using var reader = await cmd.ExecuteReaderAsync(cancellationToken);
+        if (await reader.ReadAsync(cancellationToken))
+            return MapUser(reader);
+        return null;
     }
 
     public async Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken = default)
