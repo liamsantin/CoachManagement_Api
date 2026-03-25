@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "CoachManagement API",
-    "description": "Toutes les routes des controllers (Auth, User, Team). Mettre à jour ce fichier à chaque nouveau controller.",
+    "description": "Toutes les routes des controllers (Auth, User, Team, Club). Mettre à jour ce fichier à chaque nouveau controller.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -248,6 +248,117 @@
               "path": ["api", "team", "1"]
             },
             "description": "DELETE /api/team/{id} — Suppression si propriétaire (204)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Club",
+      "item": [
+        {
+          "name": "Get all clubs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/club",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "club"]
+            },
+            "description": "GET /api/club — Tous les clubs de l'utilisateur connecté."
+          }
+        },
+        {
+          "name": "Get club by id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/club/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "club", "1"]
+            },
+            "description": "GET /api/club/{id} — Détail si le club appartient à l'utilisateur."
+          }
+        },
+        {
+          "name": "Create club",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Mon club\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/club",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "club"]
+            },
+            "description": "POST /api/club — Création d'un club."
+          }
+        },
+        {
+          "name": "Update club",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Mon club (modifié)\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/club/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "club", "1"]
+            },
+            "description": "PUT /api/club/{id} — Mise à jour si propriétaire."
+          }
+        },
+        {
+          "name": "Delete club",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/club/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "club", "1"]
+            },
+            "description": "DELETE /api/club/{id} — Suppression si propriétaire (204)."
           }
         }
       ]
