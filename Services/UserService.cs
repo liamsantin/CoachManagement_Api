@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using CoachManagement_Api.DTOs.User;
+using CoachManagement_Api.Entity;
 using CoachManagement_Api.Repositories.interfaces;
 using CoachManagement_Api.Services.interfaces;
 
@@ -31,16 +32,16 @@ public class UserService : IUserService
         return await GetByIdAsync(userId);
     }
 
-    private static UserResponse ToUserResponse(Models.User user)
+    private static UserResponse ToUserResponse(User user)
     {
         return new UserResponse
         {
-            Id = user.IdUsers,
-            Username = user.Username,
-            Email = user.Email,
-            Phone = user.Phone,
-            CreatedAt = user.CreatedAt,
-            UpdatedAt = user.UpdatedAt
+            Id = user.id_users,
+            Username = user.username,
+            Email = user.email,
+            Phone = user.phone,
+            CreatedAt = user.created_at,
+            UpdatedAt = user.updated_at
         };
     }
 }

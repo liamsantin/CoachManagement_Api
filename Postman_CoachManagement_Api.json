@@ -1,18 +1,12 @@
 {
   "info": {
     "name": "CoachManagement API",
-    "description": "Toutes les routes des controllers (Auth, User, Team, Club, Localite, Canton). Mettre à jour ce fichier à chaque nouveau controller.",
+    "description": "Collection complete de toutes les routes API.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://localhost:5089"
-    },
-    {
-      "key": "token",
-      "value": ""
-    }
+    { "key": "baseUrl", "value": "http://localhost:5089" },
+    { "key": "token", "value": "" }
   ],
   "item": [
     {
@@ -22,80 +16,28 @@
           "name": "Register",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"username\": \"johndoe\",\n  \"password\": \"MotDePasse123!\",\n  \"email\": \"john@example.com\",\n  \"phone\": \"0612345678\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/register",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "auth", "register"]
-            },
-            "description": "POST /api/auth/register — Inscription. 201 = succès, 409 = username/email déjà utilisé."
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"johndoe\",\n  \"password\": \"MotDePasse123!\",\n  \"email\": \"john@example.com\",\n  \"phone\": \"0612345678\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] }
           }
         },
         {
           "name": "Login",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"username\": \"johndoe\",\n  \"password\": \"MotDePasse123!\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/login",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "auth", "login"]
-            },
-            "description": "POST /api/auth/login — Connexion JWT."
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"johndoe\",\n  \"password\": \"MotDePasse123!\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
           }
         },
         {
-          "name": "Login (sauvegarde token)",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "var json = pm.response.json();",
-                  "if (json.token) {",
-                  "    pm.collectionVariables.set('token', json.token);",
-                  "}"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
+          "name": "Login (save token)",
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["var json = pm.response.json();", "if (json.token) {", "  pm.collectionVariables.set('token', json.token);", "}"] } }],
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"username\": \"johndoe\",\n  \"password\": \"MotDePasse123!\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/login",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "auth", "login"]
-            },
-            "description": "POST /api/auth/login — Enregistre le token dans la variable de collection {{token}}."
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"johndoe\",\n  \"password\": \"MotDePasse123!\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
           }
         }
       ]
@@ -103,346 +45,196 @@
     {
       "name": "User",
       "item": [
-        {
-          "name": "Get current user (me)",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/user/me",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "user", "me"]
-            },
-            "description": "GET /api/user/me — Utilisateur connecté (JWT)."
-          }
-        },
-        {
-          "name": "Get user by id",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/user/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "user", "1"]
-            },
-            "description": "GET /api/user/{id} — Utilisateur par id."
-          }
-        }
+        { "name": "Get me", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/user/me", "host": ["{{baseUrl}}"], "path": ["api", "user", "me"] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/user/1", "host": ["{{baseUrl}}"], "path": ["api", "user", "1"] } } }
       ]
     },
     {
       "name": "Team",
       "item": [
-        {
-          "name": "Get all teams",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/team",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "team"]
-            },
-            "description": "GET /api/team — Toutes les équipes de l'utilisateur connecté."
-          }
-        },
-        {
-          "name": "Get team by id",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/team/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "team", "1"]
-            },
-            "description": "GET /api/team/{id} — Détail si l'équipe appartient à l'utilisateur."
-          }
-        },
-        {
-          "name": "Create team",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"fk_clubs_id\": null,\n  \"fk_leagues_id\": 1,\n  \"name\": \"Mon équipe\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/team",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "team"]
-            },
-            "description": "POST /api/team — Création. fk_clubs_id optionnel."
-          }
-        },
-        {
-          "name": "Update team",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"fk_clubs_id\": null,\n  \"fk_leagues_id\": 1,\n  \"name\": \"Mon équipe (modifiée)\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/team/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "team", "1"]
-            },
-            "description": "PUT /api/team/{id} — Mise à jour si propriétaire."
-          }
-        },
-        {
-          "name": "Delete team",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/team/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "team", "1"]
-            },
-            "description": "DELETE /api/team/{id} — Suppression si propriétaire (204)."
-          }
-        }
+        { "name": "Get all", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/team", "host": ["{{baseUrl}}"], "path": ["api", "team"] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/team/1", "host": ["{{baseUrl}}"], "path": ["api", "team", "1"] } } },
+        { "name": "Create", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fk_clubs_id\": null,\n  \"fk_leagues_id\": 1,\n  \"name\": \"Mon equipe\"\n}" }, "url": { "raw": "{{baseUrl}}/api/team", "host": ["{{baseUrl}}"], "path": ["api", "team"] } } },
+        { "name": "Update", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fk_clubs_id\": null,\n  \"fk_leagues_id\": 1,\n  \"name\": \"Mon equipe MAJ\"\n}" }, "url": { "raw": "{{baseUrl}}/api/team/1", "host": ["{{baseUrl}}"], "path": ["api", "team", "1"] } } },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/team/1", "host": ["{{baseUrl}}"], "path": ["api", "team", "1"] } } }
       ]
     },
     {
       "name": "Club",
       "item": [
-        {
-          "name": "Get all clubs",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/club",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "club"]
-            },
-            "description": "GET /api/club — Tous les clubs de l'utilisateur connecté."
-          }
-        },
-        {
-          "name": "Get club by id",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/club/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "club", "1"]
-            },
-            "description": "GET /api/club/{id} — Détail si le club appartient à l'utilisateur."
-          }
-        },
-        {
-          "name": "Create club",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Mon club\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/club",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "club"]
-            },
-            "description": "POST /api/club — Création d'un club."
-          }
-        },
-        {
-          "name": "Update club",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Mon club (modifié)\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/club/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "club", "1"]
-            },
-            "description": "PUT /api/club/{id} — Mise à jour si propriétaire."
-          }
-        },
-        {
-          "name": "Delete club",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/club/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "club", "1"]
-            },
-            "description": "DELETE /api/club/{id} — Suppression si propriétaire (204)."
-          }
-        }
+        { "name": "Get all", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/club", "host": ["{{baseUrl}}"], "path": ["api", "club"] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/club/1", "host": ["{{baseUrl}}"], "path": ["api", "club", "1"] } } },
+        { "name": "Create", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"name\": \"Mon club\"\n}" }, "url": { "raw": "{{baseUrl}}/api/club", "host": ["{{baseUrl}}"], "path": ["api", "club"] } } },
+        { "name": "Update", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"name\": \"Mon club MAJ\"\n}" }, "url": { "raw": "{{baseUrl}}/api/club/1", "host": ["{{baseUrl}}"], "path": ["api", "club", "1"] } } },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/club/1", "host": ["{{baseUrl}}"], "path": ["api", "club", "1"] } } }
+      ]
+    },
+    {
+      "name": "ClubsLocalites",
+      "item": [
+        { "name": "Get all", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/clubslocalites", "host": ["{{baseUrl}}"], "path": ["api", "clubslocalites"] } } },
+        { "name": "Get by ids", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/clubslocalites/1/1", "host": ["{{baseUrl}}"], "path": ["api", "clubslocalites", "1", "1"] } } },
+        { "name": "Create", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"id_localites\": 1,\n  \"id_clubs\": 1\n}" }, "url": { "raw": "{{baseUrl}}/api/clubslocalites", "host": ["{{baseUrl}}"], "path": ["api", "clubslocalites"] } } },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/clubslocalites/1/1", "host": ["{{baseUrl}}"], "path": ["api", "clubslocalites", "1", "1"] } } }
       ]
     },
     {
       "name": "Localite",
       "item": [
-        {
-          "name": "Get all localites",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/localite",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "localite"]
-            },
-            "description": "GET /api/localite — Toutes les localités."
-          }
-        },
-        {
-          "name": "Get localite by id",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/localite/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "localite", "1"]
-            },
-            "description": "GET /api/localite/{id} — Détail d'une localité."
-          }
-        }
+        { "name": "Get all", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/localite", "host": ["{{baseUrl}}"], "path": ["api", "localite"] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/localite/1", "host": ["{{baseUrl}}"], "path": ["api", "localite", "1"] } } }
       ]
     },
     {
       "name": "Canton",
       "item": [
-        {
-          "name": "Get all cantons",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/canton",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "canton"]
-            },
-            "description": "GET /api/canton — Tous les cantons."
-          }
-        },
-        {
-          "name": "Get canton by id",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/canton/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "canton", "1"]
-            },
-            "description": "GET /api/canton/{id} — Détail d'un canton."
-          }
-        }
+        { "name": "Get all", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/canton", "host": ["{{baseUrl}}"], "path": ["api", "canton"] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/canton/1", "host": ["{{baseUrl}}"], "path": ["api", "canton", "1"] } } }
+      ]
+    },
+    {
+      "name": "League",
+      "item": [
+        { "name": "Get all", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/league", "host": ["{{baseUrl}}"], "path": ["api", "league"] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/league/1", "host": ["{{baseUrl}}"], "path": ["api", "league", "1"] } } }
+      ]
+    },
+    {
+      "name": "StatusMatch",
+      "item": [
+        { "name": "Get all", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/statusmatch", "host": ["{{baseUrl}}"], "path": ["api", "statusmatch"] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/statusmatch/1", "host": ["{{baseUrl}}"], "path": ["api", "statusmatch", "1"] } } }
+      ]
+    },
+    {
+      "name": "TypesMatch",
+      "item": [
+        { "name": "Get all", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/typesmatch", "host": ["{{baseUrl}}"], "path": ["api", "typesmatch"] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/typesmatch/1", "host": ["{{baseUrl}}"], "path": ["api", "typesmatch", "1"] } } }
+      ]
+    },
+    {
+      "name": "TypesTraining",
+      "item": [
+        { "name": "Get all", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/typestraining", "host": ["{{baseUrl}}"], "path": ["api", "typestraining"] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/typestraining/1", "host": ["{{baseUrl}}"], "path": ["api", "typestraining", "1"] } } }
+      ]
+    },
+    {
+      "name": "Position",
+      "item": [
+        { "name": "Get all", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/position", "host": ["{{baseUrl}}"], "path": ["api", "position"] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/position/1", "host": ["{{baseUrl}}"], "path": ["api", "position", "1"] } } }
+      ]
+    },
+    {
+      "name": "Opponent",
+      "item": [
+        { "name": "Get all", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/opponent", "host": ["{{baseUrl}}"], "path": ["api", "opponent"] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/opponent/1", "host": ["{{baseUrl}}"], "path": ["api", "opponent", "1"] } } },
+        { "name": "Create", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fk_leagues_id\": 1,\n  \"name\": \"Opponent FC\",\n  \"club\": \"Opponent Club\"\n}" }, "url": { "raw": "{{baseUrl}}/api/opponent", "host": ["{{baseUrl}}"], "path": ["api", "opponent"] } } },
+        { "name": "Update", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fk_leagues_id\": 1,\n  \"name\": \"Opponent FC 2\",\n  \"club\": \"Opponent Club\"\n}" }, "url": { "raw": "{{baseUrl}}/api/opponent/1", "host": ["{{baseUrl}}"], "path": ["api", "opponent", "1"] } } },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/opponent/1", "host": ["{{baseUrl}}"], "path": ["api", "opponent", "1"] } } }
+      ]
+    },
+    {
+      "name": "Season",
+      "item": [
+        { "name": "Get all", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/season", "host": ["{{baseUrl}}"], "path": ["api", "season"] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/season/1", "host": ["{{baseUrl}}"], "path": ["api", "season", "1"] } } },
+        { "name": "Create", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"startDate\": \"2025-07-01T00:00:00\",\n  \"endDate\": \"2026-06-30T00:00:00\",\n  \"name\": \"Saison 2025-2026\",\n  \"notes\": null\n}" }, "url": { "raw": "{{baseUrl}}/api/season", "host": ["{{baseUrl}}"], "path": ["api", "season"] } } },
+        { "name": "Update", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"startDate\": \"2025-07-01T00:00:00\",\n  \"endDate\": \"2026-06-30T00:00:00\",\n  \"name\": \"Saison MAJ\",\n  \"notes\": null\n}" }, "url": { "raw": "{{baseUrl}}/api/season/1", "host": ["{{baseUrl}}"], "path": ["api", "season", "1"] } } },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/season/1", "host": ["{{baseUrl}}"], "path": ["api", "season", "1"] } } }
+      ]
+    },
+    {
+      "name": "Formation",
+      "item": [
+        { "name": "Get all", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/formation", "host": ["{{baseUrl}}"], "path": ["api", "formation"] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/formation/1", "host": ["{{baseUrl}}"], "path": ["api", "formation", "1"] } } },
+        { "name": "Create", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"format\": \"4-3-3\",\n  \"description\": null\n}" }, "url": { "raw": "{{baseUrl}}/api/formation", "host": ["{{baseUrl}}"], "path": ["api", "formation"] } } },
+        { "name": "Update", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"format\": \"4-4-2\",\n  \"description\": null\n}" }, "url": { "raw": "{{baseUrl}}/api/formation/1", "host": ["{{baseUrl}}"], "path": ["api", "formation", "1"] } } },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/formation/1", "host": ["{{baseUrl}}"], "path": ["api", "formation", "1"] } } }
+      ]
+    },
+    {
+      "name": "Player",
+      "item": [
+        { "name": "Get all by team", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/player?teamId=1", "host": ["{{baseUrl}}"], "path": ["api", "player"], "query": [{ "key": "teamId", "value": "1" }] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/player/1", "host": ["{{baseUrl}}"], "path": ["api", "player", "1"] } } },
+        { "name": "Create", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fk_teams_id\": 1,\n  \"fk_positions_id\": 1,\n  \"nom\": \"Dupont\",\n  \"prenom\": \"Jean\",\n  \"numeroMaillot\": 10,\n  \"email\": \"jean@example.com\",\n  \"phone\": \"0612345678\"\n}" }, "url": { "raw": "{{baseUrl}}/api/player", "host": ["{{baseUrl}}"], "path": ["api", "player"] } } },
+        { "name": "Update", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fk_teams_id\": 1,\n  \"fk_positions_id\": 1,\n  \"nom\": \"Dupont\",\n  \"prenom\": \"Jean\",\n  \"numeroMaillot\": 11\n}" }, "url": { "raw": "{{baseUrl}}/api/player/1", "host": ["{{baseUrl}}"], "path": ["api", "player", "1"] } } },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/player/1", "host": ["{{baseUrl}}"], "path": ["api", "player", "1"] } } }
+      ]
+    },
+    {
+      "name": "Training",
+      "item": [
+        { "name": "Get all by team", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/training?teamId=1", "host": ["{{baseUrl}}"], "path": ["api", "training"], "query": [{ "key": "teamId", "value": "1" }] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/training/1", "host": ["{{baseUrl}}"], "path": ["api", "training", "1"] } } },
+        { "name": "Create", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fk_teams_id\": 1,\n  \"fk_localites_id\": 1,\n  \"fk_types_id\": null,\n  \"description\": null,\n  \"nbrPlayer\": 0,\n  \"date\": \"2025-03-25\",\n  \"name\": \"Entrainement\",\n  \"startDate\": \"2025-03-25T18:00:00\",\n  \"endDate\": \"2025-03-25T19:30:00\"\n}" }, "url": { "raw": "{{baseUrl}}/api/training", "host": ["{{baseUrl}}"], "path": ["api", "training"] } } },
+        { "name": "Update", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fk_teams_id\": 1,\n  \"fk_localites_id\": 1,\n  \"fk_types_id\": null,\n  \"description\": null,\n  \"nbrPlayer\": 12,\n  \"date\": \"2025-03-25\",\n  \"name\": \"Entrainement MAJ\",\n  \"startDate\": \"2025-03-25T18:00:00\",\n  \"endDate\": \"2025-03-25T19:30:00\"\n}" }, "url": { "raw": "{{baseUrl}}/api/training/1", "host": ["{{baseUrl}}"], "path": ["api", "training", "1"] } } },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/training/1", "host": ["{{baseUrl}}"], "path": ["api", "training", "1"] } } }
+      ]
+    },
+    {
+      "name": "Attendance",
+      "item": [
+        { "name": "Get by training", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/attendance/by-training/1", "host": ["{{baseUrl}}"], "path": ["api", "attendance", "by-training", "1"] } } },
+        { "name": "Get by keys", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/attendance/1/1", "host": ["{{baseUrl}}"], "path": ["api", "attendance", "1", "1"] } } },
+        { "name": "Create", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"id_players\": 1,\n  \"id_trainings\": 1,\n  \"notes\": null,\n  \"retard\": false,\n  \"motif\": null\n}" }, "url": { "raw": "{{baseUrl}}/api/attendance", "host": ["{{baseUrl}}"], "path": ["api", "attendance"] } } },
+        { "name": "Update", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"notes\": \"Present\",\n  \"retard\": false,\n  \"motif\": null\n}" }, "url": { "raw": "{{baseUrl}}/api/attendance/1/1", "host": ["{{baseUrl}}"], "path": ["api", "attendance", "1", "1"] } } },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/attendance/1/1", "host": ["{{baseUrl}}"], "path": ["api", "attendance", "1", "1"] } } }
+      ]
+    },
+    {
+      "name": "Match",
+      "item": [
+        { "name": "Get all by team", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/match?teamId=1", "host": ["{{baseUrl}}"], "path": ["api", "match"], "query": [{ "key": "teamId", "value": "1" }] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/match/1", "host": ["{{baseUrl}}"], "path": ["api", "match", "1"] } } },
+        { "name": "Create", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fk_teams_id\": 1,\n  \"fk_opponents_id\": 1,\n  \"fk_status_id\": 1,\n  \"fk_types_id\": 1,\n  \"fk_seasons_id\": 1,\n  \"fk_formations_id\": 1,\n  \"fk_localites_id\": 1,\n  \"scoreEquipe\": null,\n  \"scoreOpponent\": null,\n  \"temps\": null,\n  \"stade\": null,\n  \"arbitre\": null,\n  \"date\": \"2025-03-30\",\n  \"name\": \"Match\",\n  \"startDate\": \"2025-03-30T14:00:00\",\n  \"endDate\": \"2025-03-30T16:00:00\",\n  \"lineup_name\": \"Titulaire\",\n  \"lineup_notes\": null\n}" }, "url": { "raw": "{{baseUrl}}/api/match", "host": ["{{baseUrl}}"], "path": ["api", "match"] } } },
+        { "name": "Update", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fk_teams_id\": 1,\n  \"fk_opponents_id\": 1,\n  \"fk_status_id\": 2,\n  \"fk_types_id\": 1,\n  \"fk_seasons_id\": 1,\n  \"fk_formations_id\": 1,\n  \"fk_localites_id\": 1,\n  \"scoreEquipe\": 2,\n  \"scoreOpponent\": 1,\n  \"temps\": 90.0,\n  \"stade\": \"Terrain A\",\n  \"arbitre\": \"M. Ref\",\n  \"date\": \"2025-03-30\",\n  \"name\": \"Match MAJ\",\n  \"startDate\": \"2025-03-30T14:00:00\",\n  \"endDate\": \"2025-03-30T16:00:00\",\n  \"lineup_name\": \"Titulaire MAJ\",\n  \"lineup_notes\": null\n}" }, "url": { "raw": "{{baseUrl}}/api/match/1", "host": ["{{baseUrl}}"], "path": ["api", "match", "1"] } } },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/match/1", "host": ["{{baseUrl}}"], "path": ["api", "match", "1"] } } }
+      ]
+    },
+    {
+      "name": "Participation",
+      "item": [
+        { "name": "Get by match", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/participation/by-match/1", "host": ["{{baseUrl}}"], "path": ["api", "participation", "by-match", "1"] } } },
+        { "name": "Get by keys", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/participation/1/1", "host": ["{{baseUrl}}"], "path": ["api", "participation", "1", "1"] } } },
+        { "name": "Create", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"id_players\": 1,\n  \"id_matchs\": 1,\n  \"noteOn10\": \"7\",\n  \"notes\": null,\n  \"tempsJeu\": 90,\n  \"but\": 0,\n  \"passeD\": 0,\n  \"cartonJaune\": 0,\n  \"cartonRouge\": 0\n}" }, "url": { "raw": "{{baseUrl}}/api/participation", "host": ["{{baseUrl}}"], "path": ["api", "participation"] } } },
+        { "name": "Update", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"noteOn10\": \"8\",\n  \"notes\": null,\n  \"tempsJeu\": 85,\n  \"but\": 1,\n  \"passeD\": 0,\n  \"cartonJaune\": 1,\n  \"cartonRouge\": 0\n}" }, "url": { "raw": "{{baseUrl}}/api/participation/1/1", "host": ["{{baseUrl}}"], "path": ["api", "participation", "1", "1"] } } },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/participation/1/1", "host": ["{{baseUrl}}"], "path": ["api", "participation", "1", "1"] } } }
+      ]
+    },
+    {
+      "name": "Lineup",
+      "item": [
+        { "name": "Get by match", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/lineup/by-match/1", "host": ["{{baseUrl}}"], "path": ["api", "lineup", "by-match", "1"] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/lineup/1", "host": ["{{baseUrl}}"], "path": ["api", "lineup", "1"] } } },
+        { "name": "Create", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fk_matchs_id\": 1,\n  \"fk_formations_id\": 1,\n  \"name\": \"Lineup A\",\n  \"notes\": null\n}" }, "url": { "raw": "{{baseUrl}}/api/lineup", "host": ["{{baseUrl}}"], "path": ["api", "lineup"] } } },
+        { "name": "Update", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fk_formations_id\": 1,\n  \"name\": \"Lineup B\",\n  \"notes\": \"MAJ\"\n}" }, "url": { "raw": "{{baseUrl}}/api/lineup/1", "host": ["{{baseUrl}}"], "path": ["api", "lineup", "1"] } } },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/lineup/1", "host": ["{{baseUrl}}"], "path": ["api", "lineup", "1"] } } }
+      ]
+    },
+    {
+      "name": "PlayersLineup",
+      "item": [
+        { "name": "Get by lineup", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/playerslineup/by-lineup/1", "host": ["{{baseUrl}}"], "path": ["api", "playerslineup", "by-lineup", "1"] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/playerslineup/1", "host": ["{{baseUrl}}"], "path": ["api", "playerslineup", "1"] } } },
+        { "name": "Create", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fk_players_id\": 1,\n  \"fk_lineup_id\": 1,\n  \"fk_positions_id\": 1,\n  \"titulaire\": true,\n  \"numMaillot\": 9,\n  \"capitaine\": false\n}" }, "url": { "raw": "{{baseUrl}}/api/playerslineup", "host": ["{{baseUrl}}"], "path": ["api", "playerslineup"] } } },
+        { "name": "Update", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fk_positions_id\": 1,\n  \"titulaire\": true,\n  \"numMaillot\": 10,\n  \"capitaine\": true\n}" }, "url": { "raw": "{{baseUrl}}/api/playerslineup/1", "host": ["{{baseUrl}}"], "path": ["api", "playerslineup", "1"] } } },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/playerslineup/1", "host": ["{{baseUrl}}"], "path": ["api", "playerslineup", "1"] } } }
+      ]
+    },
+    {
+      "name": "Replacement",
+      "item": [
+        { "name": "Get by match", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/replacement/by-match/1", "host": ["{{baseUrl}}"], "path": ["api", "replacement", "by-match", "1"] } } },
+        { "name": "Get by id", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/replacement/1", "host": ["{{baseUrl}}"], "path": ["api", "replacement", "1"] } } },
+        { "name": "Create", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"minute\": 60,\n  \"fk_matchs_id\": 1,\n  \"fk_play_entering\": 2,\n  \"fk_play_outgoing\": 1\n}" }, "url": { "raw": "{{baseUrl}}/api/replacement", "host": ["{{baseUrl}}"], "path": ["api", "replacement"] } } },
+        { "name": "Update", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"minute\": 65,\n  \"fk_play_entering\": 2,\n  \"fk_play_outgoing\": 1\n}" }, "url": { "raw": "{{baseUrl}}/api/replacement/1", "host": ["{{baseUrl}}"], "path": ["api", "replacement", "1"] } } },
+        { "name": "Delete", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/api/replacement/1", "host": ["{{baseUrl}}"], "path": ["api", "replacement", "1"] } } }
       ]
     }
   ]

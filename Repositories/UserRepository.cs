@@ -1,4 +1,4 @@
-using CoachManagement_Api.Models;
+using CoachManagement_Api.Entity;
 using CoachManagement_Api.Repositories.interfaces;
 using MySqlConnector;
 
@@ -30,9 +30,7 @@ public class UserRepository : IUserRepository
         cmd.Parameters.AddWithValue("@id", id);
 
         await using var reader = await cmd.ExecuteReaderAsync();
-        if (await reader.ReadAsync())
-            return MapUser(reader);
-        return null;
+        return await reader.ReadAsync() ? MapUser(reader) : null;
     }
 
     public async Task<User?> GetByUsernameAsync(string username)
@@ -51,14 +49,13 @@ public class UserRepository : IUserRepository
         cmd.Parameters.AddWithValue("@username", username);
 
         await using var reader = await cmd.ExecuteReaderAsync();
-        if (await reader.ReadAsync())
-            return MapUser(reader);
-        return null;
+        return await reader.ReadAsync() ? MapUser(reader) : null;
     }
 
     public async Task<User?> GetByEmailAsync(string? email)
     {
-        if (string.IsNullOrWhiteSpace(email)) return null;
+        if (string.IsNullOrWhiteSpace(email))
+            return null;
 
         await using var connection = new MySqlConnection(_connectionString);
         await connection.OpenAsync();
@@ -74,9 +71,7 @@ public class UserRepository : IUserRepository
         cmd.Parameters.AddWithValue("@email", email);
 
         await using var reader = await cmd.ExecuteReaderAsync();
-        if (await reader.ReadAsync())
-            return MapUser(reader);
-        return null;
+        return await reader.ReadAsync() ? MapUser(reader) : null;
     }
 
     public async Task<int> CreateAsync(User user)
@@ -91,26 +86,25 @@ public class UserRepository : IUserRepository
             """;
 
         await using var cmd = new MySqlCommand(sql, connection);
-        cmd.Parameters.AddWithValue("@username", user.Username);
-        cmd.Parameters.AddWithValue("@password", user.Password);
-        cmd.Parameters.AddWithValue("@email", user.Email ?? (object)DBNull.Value);
-        cmd.Parameters.AddWithValue("@phone", user.Phone ?? (object)DBNull.Value);
+        cmd.Parameters.AddWithValue("@username", user.username);
+        cmd.Parameters.AddWithValue("@password", user.password);
+        cmd.Parameters.AddWithValue("@email", user.email ?? (object)DBNull.Value);
+        cmd.Parameters.AddWithValue("@phone", user.phone ?? (object)DBNull.Value);
 
-        var result = await cmd.ExecuteScalarAsync();
-        return Convert.ToInt32(result);
+        return Convert.ToInt32(await cmd.ExecuteScalarAsync());
     }
 
     private static User MapUser(MySqlDataReader reader)
     {
         return new User
         {
-            IdUsers = reader.GetInt32("id_users"),
-            Username = reader.GetString("username"),
-            Password = reader.GetString("password"),
-            Email = reader.IsDBNull(reader.GetOrdinal("email")) ? null : reader.GetString("email"),
-            Phone = reader.IsDBNull(reader.GetOrdinal("phone")) ? null : reader.GetString("phone"),
-            CreatedAt = reader.GetDateTime("created_at"),
-            UpdatedAt = reader.GetDateTime("updated_at")
+            id_users = reader.GetInt32("id_users"),
+            username = reader.GetString("username"),
+            password = reader.GetString("password"),
+            email = reader.IsDBNull(reader.GetOrdinal("email")) ? null : reader.GetString("email"),
+            phone = reader.IsDBNull(reader.GetOrdinal("phone")) ? null : reader.GetString("phone"),
+            created_at = reader.GetDateTime("created_at"),
+            updated_at = reader.GetDateTime("updated_at")
         };
     }
 }

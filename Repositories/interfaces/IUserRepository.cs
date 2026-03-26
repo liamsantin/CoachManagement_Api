@@ -1,4 +1,4 @@
-using CoachManagement_Api.Models;
+using CoachManagement_Api.Entity;
 
 namespace CoachManagement_Api.Repositories.interfaces;
 

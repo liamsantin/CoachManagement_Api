@@ -2,7 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using CoachManagement_Api.DTOs.Auth;
-using CoachManagement_Api.Models;
+using CoachManagement_Api.Entity;
 using CoachManagement_Api.Repositories.interfaces;
 using CoachManagement_Api.Services.interfaces;
 using Microsoft.IdentityModel.Tokens;
@@ -24,31 +24,31 @@ public class AuthService : IAuthService
     {
         var existingByUsername = await _userRepository.GetByUsernameAsync(request.Username);
         if (existingByUsername != null)
-            return null; // Username déjà pris
+            return null;
 
         if (!string.IsNullOrWhiteSpace(request.Email))
         {
             var existingByEmail = await _userRepository.GetByEmailAsync(request.Email);
             if (existingByEmail != null)
-                return null; // Email déjà utilisé
+                return null;
         }
 
         var user = new User
         {
-            Username = request.Username,
-            Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
-            Email = request.Email,
-            Phone = request.Phone
+            username = request.Username,
+            password = BCrypt.Net.BCrypt.HashPassword(request.Password),
+            email = request.Email,
+            phone = request.Phone
         };
 
         var id = await _userRepository.CreateAsync(user);
         return new RegisterResponse
         {
             Id = id,
-            Username = user.Username,
-            Email = user.Email,
-            Phone = user.Phone,
-            Message = "Inscription réussie."
+            Username = user.username,
+            Email = user.email,
+            Phone = user.phone,
+            Message = "Inscription r�ussie."
         };
     }
 
@@ -58,7 +58,7 @@ public class AuthService : IAuthService
         if (user == null)
             return null;
 
-        if (!BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
+        if (!BCrypt.Net.BCrypt.Verify(request.Password, user.password))
             return null;
 
         var token = GenerateJwtToken(user);
@@ -67,8 +67,8 @@ public class AuthService : IAuthService
         return new LoginResponse
         {
             Token = token,
-            Username = user.Username,
-            UserId = user.IdUsers,
+            Username = user.username,
+            UserId = user.id_users,
             ExpiresAt = expiresAt
         };
     }
@@ -85,9 +85,9 @@ public class AuthService : IAuthService
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.IdUsers.ToString()),
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim(JwtRegisteredClaimNames.Sub, user.Username),
+            new Claim(ClaimTypes.NameIdentifier, user.id_users.ToString()),
+            new Claim(ClaimTypes.Name, user.username),
+            new Claim(JwtRegisteredClaimNames.Sub, user.username),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 

@@ -3,6 +3,7 @@ namespace CoachManagement_Api.Entity;
 public class Event
 {
     public int id_events { get; set; }
+    public int fk_teams_id { get; set; }
     public DateOnly date { get; set; }
     public string? name { get; set; }
     public DateTime startDate { get; set; }
